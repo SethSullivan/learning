@@ -205,35 +205,35 @@ model_df = (
 print(model_df)
 
 
-# %% DDM model of the price
-def dXdt(current_price, drift, volatility):
-    """
-    Differential equation of the drift-diffusion model
-    dX/dt = mu + sigma*N(0,1)
-    """
-
-    return current_price * np.exp(drift + volatility * np.random.normal())
-
-
-dt = 1
-timesteps = int(total_days / dt)
-company = "T"
-X0 = df.filter(pl.col("Ticker") == company).select("Close")[0].item()
-volatility = model_df.filter(pl.col("Ticker") == company).select("volatility").item()
-drift = model_df.filter(pl.col("Ticker") == company).select("drift").item()
-ddm_prediction = np.zeros(timesteps)
-ddm_prediction[0] = X0
-for i in range(total_days - 1):
-    print(ddm_prediction[i])
-    ddm_prediction[i + 1] = ddm_prediction[i] + dt * dXdt(drift, volatility)
-
-# %% Plot model with true values
-fig, ax = plt.subplots()
-dff = df.filter(pl.col("Ticker") == company)
-model_dff = model_df.filter(pl.col("Ticker") == company)
-xvals = np.arange(0, total_days, 1)
-model_price = model_dff["drift"] * xvals
-ax.plot(ddm_prediction)
-# ax.plot(xvals, model_price)
-ax.plot(xvals, dff["Close"])
-plt.show()
+# # %% DDM model of the price
+# def dXdt(current_price, drift, volatility):
+#     """
+#     Differential equation of the drift-diffusion model
+#     dX/dt = mu + sigma*N(0,1)
+#     """
+#
+#     return current_price * np.exp(drift + volatility * np.random.normal())
+#
+#
+# dt = 1
+# timesteps = int(total_days / dt)
+# company = "T"
+# X0 = df.filter(pl.col("Ticker") == company).select("Close")[0].item()
+# volatility = model_df.filter(pl.col("Ticker") == company).select("volatility").item()
+# drift = model_df.filter(pl.col("Ticker") == company).select("drift").item()
+# ddm_prediction = np.zeros(timesteps)
+# ddm_prediction[0] = X0
+# for i in range(total_days - 1):
+#     print(ddm_prediction[i])
+#     ddm_prediction[i + 1] = ddm_prediction[i] + dt * dXdt(drift, volatility)
+#
+# # %% Plot model with true values
+# fig, ax = plt.subplots()
+# dff = df.filter(pl.col("Ticker") == company)
+# model_dff = model_df.filter(pl.col("Ticker") == company)
+# xvals = np.arange(0, total_days, 1)
+# model_price = model_dff["drift"] * xvals
+# ax.plot(ddm_prediction)
+# # ax.plot(xvals, model_price)
+# ax.plot(xvals, dff["Close"])
+# plt.show()
