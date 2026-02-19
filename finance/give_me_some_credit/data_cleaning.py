@@ -7,7 +7,6 @@ dv.set_plot_style("cashaback_dark.mplstyle")
 
 # %%
 train = pd.read_csv("data/GiveMeSomeCredit/cs-training.csv", index_col=0)
-test = pd.read_csv("data/GiveMeSomeCredit/cs-test.csv", index_col=0)
 cols = train.columns[1:]
 
 # %% Outliers to remove
@@ -24,9 +23,6 @@ outliers = {
     "NumberOfTimes90DaysLate": (0, 10),
     "NumberOfDependents": (0, 5),
 }
-
-# %% Test df has nulls in sersious delinquency columsn, so replace those with 0
-test.fillna({"SeriousDlqin2yrs": 0}, inplace=True)
 
 
 # %% Deal with missing values
@@ -73,7 +69,5 @@ def clean_df(
 
 # %%
 clean_train = clean_df(train, outliers)
-clean_test = clean_df(test, outliers)
 
 clean_train.to_csv("data/GiveMeSomeCredit/cs-training-clean.csv")
-clean_test.to_csv("data/GiveMeSomeCredit/cs-test-clean.csv")
