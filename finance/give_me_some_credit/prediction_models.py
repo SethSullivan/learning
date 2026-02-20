@@ -12,6 +12,7 @@ plt.ion()
 
 # %% Functions
 def plot_roc(ax, fpr_train, tpr_train, fpr_test, tpr_test, train_auc, test_auc):
+    ax.plot(np.arange(0, 1.1, 0.1), np.arange(0, 1.1, 0.1), color="grey")
     ax.plot(fpr_train, tpr_train, label="train performance")
     ax.plot(fpr_test, tpr_test, label="test performance")
     ax.text(0.85, 0.1, f"Train AUC: {train_auc:.4f}")
@@ -23,7 +24,6 @@ def plot_roc(ax, fpr_train, tpr_train, fpr_test, tpr_test, train_auc, test_auc):
 
 # %%
 train = pd.read_csv("data/GiveMeSomeCredit/cs-training-clean.csv", index_col=0)
-test = pd.read_csv("data/GiveMeSomeCredit/cs-test.csv", index_col=0)
 
 X = train.drop(columns=["SeriousDlqin2yrs"])
 y = train["SeriousDlqin2yrs"]
@@ -108,21 +108,18 @@ plt.show()
 majority_instances = np.sum(y_train == 0)
 minority_instances = np.sum(y_train == 1)
 scale_pos_weight = majority_instances / minority_instances
-reg = xgb.XGBClassifier(
-    n_estimators=150,
+clf = xgb.XGBClassifier(
+    n_estimators=500,
     learning_rate=0.05,
+    max_depth=5,
     # n_features=2,
     scale_pos_weight=scale_pos_weight,
     objective="binary:logistic",
     eval_metric="auc",
 )
-cols_to_use = [
-    "RevolvingUtilizationOfUnsecuredLines",
-    "age",
-    "NumberOfTime30-59DaysPastDueNotWorse",
-    "DebtRatio",
-]
-_ = reg.fit(
+
+cols_to_use = FEATURES
+_ = clf.fit(
     X_train.loc[:, cols_to_use],
     y_train,
     eval_set=[(X_train[cols_to_use], y_train), (X_test[cols_to_use], y_test)],
@@ -132,15 +129,15 @@ _ = reg.fit(
 # %% Feature Importance, roc and auc
 fig, ax = plt.subplots(figsize=(12, 4))
 xlocs = np.arange(0, len(cols_to_use))
-ax.bar(xlocs, -np.sort(-reg.feature_importances_))
+ax.bar(xlocs, -np.sort(-clf.feature_importances_))
 ax.set_xticks(xlocs, labels=cols_to_use, rotation=45)
 ax.set_ylabel("Importance")
 plt.tight_layout()
 plt.show()
 
 # Calculate roc auc
-xg_train_preds = reg.predict(X_train[cols_to_use])
-xg_test_preds = reg.predict(X_test[cols_to_use])
+xg_train_preds = clf.predict_proba(X_train[cols_to_use])[:, 1]
+xg_test_preds = clf.predict_proba(X_test[cols_to_use])[:, 1]
 fpr_train, tpr_train, _ = roc_curve(y_train, xg_train_preds)
 fpr_test, tpr_test, _ = roc_curve(y_test, xg_test_preds)
 train_auc = roc_auc_score(y_train, xg_train_preds)
@@ -150,3 +147,16 @@ test_auc = roc_auc_score(y_test, xg_test_preds)
 fig, ax = plt.subplots()
 plot_roc(ax, fpr_train, tpr_train, fpr_test, tpr_test, train_auc, test_auc)
 plt.show()
+
+
+# %% Decision tree
+
+# %% Generate predictions for submission
+test = pd.read_csv("data/GiveMeSomeCredit/cs-test.csv", index_col=0).drop(
+    columns="SeriousDlqin2yrs"
+)
+final_xg_preds = clf.predict_proba(test)[:, 1]
+final_df = pd.DataFrame({"Probability": final_xg_preds})
+final_df.index = final_df.index + 1
+print(final_df)
+final_df.to_csv("data/GiveMeSomeCredit/final-submission.csv", index_label="Id")
