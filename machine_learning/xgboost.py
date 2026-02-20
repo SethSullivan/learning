@@ -5,7 +5,6 @@ import polars as pl
 import data_visualization as dv
 from datetime import datetime
 import seaborn as sns
-from sklearn.metrics import mean_squared_error
 
 plt.ion()
 dv.set_plot_style("cashaback_dark.mplstyle")
