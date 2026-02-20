@@ -2,10 +2,12 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split, cross_val_predict
+from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_curve, roc_auc_score
 import numpy as np
 import xgboost as xgb
+
+plt.ion()
 
 
 # %% Functions
@@ -14,6 +16,8 @@ def plot_roc(ax, fpr_train, tpr_train, fpr_test, tpr_test, train_auc, test_auc):
     ax.plot(fpr_test, tpr_test, label="test performance")
     ax.text(0.85, 0.1, f"Train AUC: {train_auc:.4f}")
     ax.text(0.85, 0.05, f"Test AUC:  {test_auc:.4f}")
+    ax.set_xlabel("False Positive Rate")
+    ax.set_ylabel("True Positive Rate")
     ax.legend()
 
 
@@ -23,10 +27,14 @@ test = pd.read_csv("data/GiveMeSomeCredit/cs-test.csv", index_col=0)
 
 X = train.drop(columns=["SeriousDlqin2yrs"])
 y = train["SeriousDlqin2yrs"]
+FEATURES = list(X.columns)
 
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, random_state=123, test_size=0.25
 )
+# Only doing this so pyright stops yelling
+X_train = pd.DataFrame(X_train)
+X_test = pd.DataFrame(X_test)
 
 # %% Predict serious delinquency using logistic regression
 
@@ -92,13 +100,53 @@ test_auc = roc_auc_score(y_test, test_predictions)
 fig, ax = plt.subplots()
 plot_roc(ax, fpr_train, tpr_train, fpr_test, tpr_test, train_auc, test_auc)
 plt.show()
+
 # %% XGBoost
 # Create xgb regression model
-# n_estimators is the number of trees
-reg = xgb.XGBRegressor(n_estimators=1000, learning_rate=0.001)
-reg.fit(
-    X_train,
+# n_estimators is the number of trees, more is more complex, but can lead to overfitting
+# scale_pos_weight is for unbalanced data sets, negative meaning minority class
+majority_instances = np.sum(y_train == 0)
+minority_instances = np.sum(y_train == 1)
+scale_pos_weight = majority_instances / minority_instances
+reg = xgb.XGBClassifier(
+    n_estimators=150,
+    learning_rate=0.05,
+    # n_features=2,
+    scale_pos_weight=scale_pos_weight,
+    objective="binary:logistic",
+    eval_metric="auc",
+)
+cols_to_use = [
+    "RevolvingUtilizationOfUnsecuredLines",
+    "age",
+    "NumberOfTime30-59DaysPastDueNotWorse",
+    "DebtRatio",
+]
+_ = reg.fit(
+    X_train.loc[:, cols_to_use],
     y_train,
-    eval_set=[(X_train, y_train), (X_test, y_test)],
+    eval_set=[(X_train[cols_to_use], y_train), (X_test[cols_to_use], y_test)],
     verbose=100,
 )
+
+# %% Feature Importance, roc and auc
+fig, ax = plt.subplots(figsize=(12, 4))
+xlocs = np.arange(0, len(cols_to_use))
+ax.bar(xlocs, -np.sort(-reg.feature_importances_))
+ax.set_xticks(xlocs, labels=cols_to_use, rotation=45)
+ax.set_ylabel("Importance")
+plt.tight_layout()
+plt.show()
+
+# Calculate roc auc
+xg_train_preds = reg.predict(X_train[cols_to_use])
+xg_test_preds = reg.predict(X_test[cols_to_use])
+fpr_train, tpr_train, _ = roc_curve(y_train, xg_train_preds)
+fpr_test, tpr_test, _ = roc_curve(y_test, xg_test_preds)
+train_auc = roc_auc_score(y_train, xg_train_preds)
+test_auc = roc_auc_score(y_test, xg_test_preds)
+
+# Plot roc auc
+fig, ax = plt.subplots()
+plot_roc(ax, fpr_train, tpr_train, fpr_test, tpr_test, train_auc, test_auc)
+plt.show()
