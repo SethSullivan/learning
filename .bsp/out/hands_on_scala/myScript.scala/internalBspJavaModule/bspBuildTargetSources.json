@@ -1,0 +1,13 @@
+{
+    "value": {
+        "sources": [
+            "file:///Users/sethsull/Documents/coding/hands_on_scala/myScript.scala"
+        ],
+        "generatedSources": []
+    },
+    "valueHash": -599977859,
+    "inputsHash": -820059386,
+    "millVersion": "1.1.2",
+    "millJvmVersion": "21.0.9",
+    "classLoaderSigHash": 1369727774
+}

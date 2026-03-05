@@ -1,0 +1,11 @@
+{
+    "value": {
+        "analysisFile": "/Users/sethsull/Documents/coding/.bsp/out/hands_on_scala/myScript.scala/compile0.dest/zinc",
+        "classes": "ref:v0:aa652cd1:/Users/sethsull/Documents/coding/.bsp/out/hands_on_scala/myScript.scala/compile.dest/classes"
+    },
+    "valueHash": 938095443,
+    "inputsHash": -1936737051,
+    "millVersion": "1.1.2",
+    "millJvmVersion": "21.0.9",
+    "classLoaderSigHash": 1369727774
+}

@@ -1,0 +1,10 @@
+{
+    "value": [
+        "qref:v1:7abb7195:/Users/sethsull/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/sourcegraph/semanticdb-javac/0.11.1/semanticdb-javac-0.11.1.jar"
+    ],
+    "valueHash": 218853310,
+    "inputsHash": 937521941,
+    "millVersion": "1.1.2",
+    "millJvmVersion": "21.0.9",
+    "classLoaderSigHash": 1369727774
+}

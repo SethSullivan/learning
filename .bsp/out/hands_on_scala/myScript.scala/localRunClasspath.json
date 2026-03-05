@@ -1,0 +1,10 @@
+{
+    "value": [
+        "ref:v0:aa652cd1:/Users/sethsull/Documents/coding/.bsp/out/hands_on_scala/myScript.scala/compile.dest/classes"
+    ],
+    "valueHash": 1353394015,
+    "inputsHash": 202491972,
+    "millVersion": "1.1.2",
+    "millJvmVersion": "21.0.9",
+    "classLoaderSigHash": 1369727774
+}

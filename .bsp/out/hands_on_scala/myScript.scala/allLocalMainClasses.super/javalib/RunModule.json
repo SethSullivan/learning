@@ -1,0 +1,11 @@
+{
+    "value": [
+        "MillScriptMain_myScript_scala",
+        "hello"
+    ],
+    "valueHash": -1822535071,
+    "inputsHash": 105126663,
+    "millVersion": "1.1.2",
+    "millJvmVersion": "21.0.9",
+    "classLoaderSigHash": 1369727774
+}

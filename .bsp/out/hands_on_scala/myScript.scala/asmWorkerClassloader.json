@@ -1,0 +1,12 @@
+{
+    "value": {
+        "worker": "hands_on_scala/myScript.scala:asmWorkerClassloader",
+        "toString": "mill.api.daemon.MillURLClassLoader@61cdcea1",
+        "inputsHash": 1500827261
+    },
+    "valueHash": 1500827261,
+    "inputsHash": 1500827261,
+    "millVersion": "1.1.2",
+    "millJvmVersion": "21.0.9",
+    "classLoaderSigHash": 1369727774
+}

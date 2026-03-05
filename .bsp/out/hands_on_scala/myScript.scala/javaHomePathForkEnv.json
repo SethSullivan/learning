@@ -1,0 +1,10 @@
+{
+    "value": {
+        "PATH": "/Users/sethsull/Library/Caches/Coursier/arc/https/cdn.azul.com/zulu/bin/zulu21.46.19-ca-jdk21.0.9-macosx_aarch64.tar.gz/zulu21.46.19-ca-jdk21.0.9-macosx_aarch64/zulu-21.jdk/Contents/Home/bin:/Users/sethsull/Library/Caches/Coursier/arc/https/cdn.azul.com/zulu/bin/zulu21.46.19-ca-jdk21.0.9-macosx_aarch64.tar.gz/zulu21.46.19-ca-jdk21.0.9-macosx_aarch64/bin:/Users/sethsull/.local/share/nvim/mason/bin:/Users/sethsull/Documents/coding/.venv/bin:/Users/sethsull/.opencode/bin:/Users/sethsull/.nvm/versions/node/v24.11.1/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Library/TeX/texbin:/Users/sethsull/.local/bin:/Applications/kitty.app/Contents/MacOS:/Users/sethsull/Library/Application Support/Coursier/bin"
+    },
+    "valueHash": -295645950,
+    "inputsHash": 1721558931,
+    "millVersion": "1.1.2",
+    "millJvmVersion": "21.0.9",
+    "classLoaderSigHash": 1369727774
+}

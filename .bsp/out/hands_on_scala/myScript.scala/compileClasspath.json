@@ -1,0 +1,24 @@
+{
+    "value": [
+        "qref:v1:5f9f6d3f:/Users/sethsull/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/3.8.1/scala-library-3.8.1.jar",
+        "qref:v1:f828b9c1:/Users/sethsull/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/pprint_3/0.9.6/pprint_3-0.9.6.jar",
+        "qref:v1:4edf1128:/Users/sethsull/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/os-lib_3/0.11.8/os-lib_3-0.11.8.jar",
+        "qref:v1:cc3a7106:/Users/sethsull/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/upickle_3/4.4.2/upickle_3-4.4.2.jar",
+        "qref:v1:187ec0fd:/Users/sethsull/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/requests_3/0.9.3/requests_3-0.9.3.jar",
+        "qref:v1:393662d5:/Users/sethsull/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/mainargs_3/0.7.8/mainargs_3-0.7.8.jar",
+        "qref:v1:aad65ed1:/Users/sethsull/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/fansi_3/0.5.1/fansi_3-0.5.1.jar",
+        "qref:v1:40ece282:/Users/sethsull/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_3/0.4.3-M5/sourcecode_3-0.4.3-M5.jar",
+        "qref:v1:53c369aa:/Users/sethsull/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/geny_3/1.1.1/geny_3-1.1.1.jar",
+        "qref:v1:f1ab5fff:/Users/sethsull/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/os-zip/0.11.8/os-zip-0.11.8.jar",
+        "qref:v1:0398f896:/Users/sethsull/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/ujson_3/4.4.2/ujson_3-4.4.2.jar",
+        "qref:v1:8389bd85:/Users/sethsull/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/upack_3/4.4.2/upack_3-4.4.2.jar",
+        "qref:v1:6920e45d:/Users/sethsull/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/upickle-implicits_3/4.4.2/upickle-implicits_3-4.4.2.jar",
+        "qref:v1:0168cd2a:/Users/sethsull/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_3/2.12.0/scala-collection-compat_3-2.12.0.jar",
+        "qref:v1:06bc69bb:/Users/sethsull/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/upickle-core_3/4.4.2/upickle-core_3-4.4.2.jar"
+    ],
+    "valueHash": 1873470125,
+    "inputsHash": 1990120852,
+    "millVersion": "1.1.2",
+    "millJvmVersion": "21.0.9",
+    "classLoaderSigHash": 1369727774
+}
