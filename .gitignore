@@ -9,5 +9,9 @@ wheels/
 figures/
 data/
 .DS_Store
+.bsp/
+.metals/
+.scala-build/
+out/
 # Virtual environments
 .venv
