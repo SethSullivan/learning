@@ -5,6 +5,9 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_curve, roc_auc_score
 import xgboost as xgb
+import data_visualization as dv 
+
+dv.set_plot_style("cashaback_dark.mplstyle")
 
 # %% Import data
 dtypes = {
@@ -22,6 +25,7 @@ dtypes = {
     "Property_Area": pl.String,
     "Loan_Status": pl.String,
 }
+# https://www.kaggle.com/datasets/burak3ergun/loan-data-set
 df = pl.read_csv("data/loan_portfolio/train.csv", schema_overrides=dtypes)
 # Lowercase all columns
 df = df.rename({col: col.lower() for col in df.columns})
@@ -62,6 +66,9 @@ print(df)
 # 2. Multiply that loan_amount
 # 3. Monte carlo simulation using probability of default's to generate a distribution of expected losses
 # 4. See where the 95% intervals are and that's the answer
+
+# Finding optimal policy 
+# 1. Select a prob_default cutoff and simulate expected loss and profits 
 
 # %% Train/test split
 df = df.to_pandas()
@@ -143,3 +150,64 @@ print(
     f"Bank can be 95% confident that losses won't exceed {np.percentile(original_expected_loss, 97.5)}"
 )
 print(f"Bank can be 95% confident that losses won't exceed {conf_interval[1]}")
+
+#%% Now use probabilities to find optimal policy
+# Max reward and minimize expected loss
+
+# profits is the interest rate on the loan 
+INT_RATE = 0.3
+recovery_rate = 0.4 # Hard coded, this should be modeled
+df['prob_default'] = preds
+# 12 months of accumulating interest, this is assuming that they don't pay off the loan, and just pay the interest along the way
+df["expected_profit"] = df['loanamount']*(1 - df["prob_default"])*INT_RATE
+# EAD is loan amount (not always true, people might pay back part of the loan, but doing this to simplify)
+# PD is prob_default calculated by the model
+# LGD is (1 - Recovery Rate)
+df['expected_loss'] = df["loanamount"]*df["prob_default"]*(1 - recovery_rate)
+df['expected_gain'] = df['expected_profit'] - df['expected_loss']
+
+# %% Histogram of profits losses gains
+
+fig = dv.AutoFigure('a;b;c')
+fig.axes['a'].hist(df['expected_profit'], bins=50)
+fig.axes['b'].hist(df['expected_loss'], bins=50)
+fig.axes['c'].hist(df['expected_gain'], bins=50)
+
+# %% 
+fig = dv.AutoFigure('a;b;c', figsize=(10,10))
+
+fig.axes['a'].scatter(df['prob_default'], df['expected_profit'])
+fig.axes['b'].scatter(df['prob_default'], df['expected_loss'])
+fig.axes['c'].scatter(df['prob_default'], df['expected_gain'])
+
+# %% Simulate with different prob cutoffs
+prob_default_cutoffs = np.arange(0.02,1,0.01)
+expected_profits = []
+expected_losses = []
+expected_gains = []
+for cutoff in prob_default_cutoffs:
+    new_df = df[df['prob_default']<cutoff]
+    print(len(new_df))
+    expected_profits.append(new_df['expected_profit'].sum())
+    expected_losses.append(new_df['expected_loss'].sum())
+    expected_gains.append(new_df['expected_gain'].sum())
+    
+# %% 
+fig = dv.AutoFigure('a;b;c', figsize=(7,7))
+
+fig.axes['a'].plot(expected_profits)
+fig.axes['b'].plot(expected_losses)
+fig.axes['c'].plot(expected_gains)
+fig.axes['c'].axvline(np.argmax(expected_gains), ymin=0, ymax = 0.63)
+fig.axes['c'].text(np.argmax(expected_gains),np.max(expected_gains), rf"Cutoff Policy"+ "\n" + rf"($\tau = {np.argmax(expected_gains)/100}$)", ha='center', va='bottom', fontweight='bold')
+
+fig.axes['a'].set_ylabel("Expected Profit")
+fig.axes['b'].set_ylabel("Expected Loss")
+fig.axes['c'].set_ylabel("Expected Gain")
+
+for ax in fig.axes.values():
+    ax.set_ylim(0,20000)
+    ax.set_xlabel("Probability of Default Cutoff")
+
+       
+# %%
