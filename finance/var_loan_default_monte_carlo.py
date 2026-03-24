@@ -199,7 +199,9 @@ fig.axes['a'].plot(expected_profits)
 fig.axes['b'].plot(expected_losses)
 fig.axes['c'].plot(expected_gains)
 fig.axes['c'].axvline(np.argmax(expected_gains), ymin=0, ymax = 0.63)
-fig.axes['c'].text(np.argmax(expected_gains),np.max(expected_gains), rf"Cutoff Policy"+ "\n" + rf"($\tau = {np.argmax(expected_gains)/100}$)", ha='center', va='bottom', fontweight='bold')
+fig.axes['c'].text(np.argmax(expected_gains),np.max(expected_gains), 
+                   rf"Cutoff Policy"+ "\n" + rf"($\tau = {np.argmax(expected_gains)}$%)", 
+                   ha='center', va='bottom', fontweight='bold')
 
 fig.axes['a'].set_ylabel("Expected Profit")
 fig.axes['b'].set_ylabel("Expected Loss")
@@ -207,7 +209,7 @@ fig.axes['c'].set_ylabel("Expected Gain")
 
 for ax in fig.axes.values():
     ax.set_ylim(0,20000)
-    ax.set_xlabel("Probability of Default Cutoff")
-
+    ax.set_xlabel("Probability of Default Cutoff (%)")
+fig.remove_figure_borders()
        
 # %%
