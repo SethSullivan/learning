@@ -15,3 +15,5 @@ data/
 out/
 # Virtual environments
 .venv
+
+*.zip
